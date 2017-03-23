@@ -53,6 +53,10 @@ EFI booting Lede:
 * create GPT partitions with cgdisk (I'm sure I've managed it with cfdisk, but apparently cgdisk is specifically tailored to the task)
 * GPT partition code for ESP partitions is `ef00`
 * GPT partition code for linux filesystem partitions is `8300`
+* `mkfs.vfat -F 32 -n BOOT /dev/sda1`
+* `mkfs.ext4 -L ROOT /dev/sda2`
+* `mount -o loop /livemnt/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs`
+* `rsync -avxHAWX --numeric-ids --info=progress2 /mnt/ledefs/ /mnt/rootfs/`
 
-
-
+### Books
+I've been meaning to take a closer look at [The Linux Programming Interface](http://man7.org/tlpi/).
