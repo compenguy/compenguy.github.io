@@ -26,6 +26,7 @@ And Rust is not perfect.  Writing [unsafe code](https://doc.rust-lang.org/beta/n
 
 
 ### My Rust Projects
-Done!
-* [ricracroe](https://github.com/compenguy/ricracroe) - a CLI tic-tac-toe game
+- [x] [ricracroe](https://github.com/compenguy/ricracroe) - a CLI tic-tac-toe game
+- [ ] nesugo - a rust-based NES emulator
+- [ ] clickrs - an X11 automated mouse and keyboard clicker
 
