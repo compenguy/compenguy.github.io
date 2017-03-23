@@ -1,1 +1,10 @@
+title: Absurditas Demens
+email: compenguy@github.com
+description: 'Collection of personal tips, documentation, and more.'
+url: 'https://compenguy.github.io/'
+github_username: compenguy
 theme: jekyll-theme-midnight
+future: true
+exclude:
+    - LICENSE
+    - Gemfile
