@@ -1,23 +1,4 @@
-## Linuxing Around
-
-Whatever the heck that means.
-
-We all know linux is great... [it does infinite loops in 5 seconds](https://en.wikipedia.org/wiki/Portal:Linux/Selected_quote/4).
-
-### Vim
-Nobody *knows* vim.  Everyone who uses it is *learning* vim.
-
-And on my quest for vimprovement...
-* https://sanctum.geek.nz/arabesque/vim-anti-patterns/
-
-### Bash
-Bash is good for some stuff.  And then there's [Bash on Balls](https://github.com/jneen/balls), the web framework in bash that nobody asked for.
-
-Some links to help me on my way:
-* http://samrowe.com/wordpress/advancing-in-the-bash-shell/
-
-### Lede/OpenWRT
-Yeah, I built my own router.  Sort of.  I don't actually have it running yet.  On my path to VPNlightenment, I've picked up some stuff.
+## Lede/OpenWRT
 
 Getting Lede:
 * [LEDE releases](https://downloads.lede-project.org/releases/)
@@ -95,6 +76,3 @@ qemu-system-x86_64 -m 1024 --bios /usr/share/ovmf/OVMF.fd -net none -hda ./sda.i
   - `-net none` disable ethernet so that it skips attempting to PXE boot
   - `-hda ./sda.img` to select the disk image to use
   - `-snapshot` write any disk modifications to temp files rather than modifying the disk image
-
-### Books
-I've been meaning to take a closer look at [The Linux Programming Interface](http://man7.org/tlpi/).
