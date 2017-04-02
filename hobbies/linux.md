@@ -71,16 +71,24 @@ add map loop0p2 (253:1): 0 1570783 linear 7:0 526336
 * create GPT partitions with cgdisk (I'm sure I've managed it with cfdisk, but apparently cgdisk is specifically tailored to the task)
 * GPT partition code for ESP partitions is `ef00`
 * GPT partition code for linux filesystem partitions is `8300`
-* `mkfs.vfat -F 32 -n BOOT /dev/sda1`
-  - `-F 32` FAT size 32 (e.g. FAT32)
-  - `-n BOOT` set volume name to BOOT
-* `mkfs.ext4 -L ROOT /dev/sda2`
-  - `-L ROOT` set volume label to ROOT
-* `mount -o loop /livemnt/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs`
-* `rsync -avxHAWX --numeric-ids --info=progress2 /mnt/ledefs/ /mnt/rootfs/`
+* Format the partitions:
+```bash
+mkfs.vfat -F 32 -n BOOT /dev/sda1
+mkfs.ext4 -L ROOT /dev/sda2
+```
+  - mkfs.vfat
+    + `-F 32` FAT size 32 (e.g. FAT32)
+    + `-n BOOT` set volume name to BOOT
+  - mkfs.ext4
+    + `-L ROOT` set volume label to ROOT
+* Copy the data from the lede rootfs image onto your usb stick:
+```bash
+mount -o loop /livemnt/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs
+rsync -avxHAWX --numeric-ids --info=progress2 /mnt/ledefs/ /mnt/rootfs/
+```
 * to run qemu using a disk image:
 ```bash
-$ qemu-system-x86_64 -m 1024 --bios /usr/share/ovmf/OVMF.fd -net none -hda ./sda.img -snapshot
+qemu-system-x86_64 -m 1024 --bios /usr/share/ovmf/OVMF.fd -net none -hda ./sda.img -snapshot
 ```
   - `-m 1024` 1024 MB of RAM
   - `--bios /usr/share/ovmf/OVMF.fd` boot the OVM UEFI image
