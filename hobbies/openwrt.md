@@ -7,14 +7,95 @@ Getting Lede:
 Basic installation instructions (MBR):
 * [Guide to using OpenWRT combined images on x86-64](https://we.riseup.net/lackof/openwrt-on-x86-64#using-the-combined-images)
 * [OpenWRT documentation for x86](https://wiki.openwrt.org/inbox/doc/openwrt_x86)
-
-Probably want to build the kernel from git lede's git, though, since [EFI framebuffer support is not in the 17.01.0 release](http://www.mail-archive.com/lede-dev@lists.infradead.org/msg05989.html), although EFI stub support is.  Besides, it boots way faster if you turn off the stupid VM guest drivers and other crap that's not needed.
 * [LEDE developer guide for building images](https://lede-project.org/docs/guide-developer/use-buildsystem)
 
+For reasons I don't understand, the default kernel seems unable to mount a root partition that is separate from the boot partition (as with UEFI) without an initrd/initramfs.  Easiest way to make this work is to embed the initramfs directly in the kernel, which means building the kernel from lede's git.  Other reasons to build a kernel from lede's git are:
+* Enabling [EFI framebuffer support that wasn't in the 17.01.0 release](http://www.mail-archive.com/lede-dev@lists.infradead.org/msg05989.html), although EFI stub support is
+* Disabling the stupid VM guest drivers/support and other crap that's not needed (speeds up boot fairly significantly)
+
 The short version:
+* Create an [initramfs](http://jootamam.net/howto-initramfs-image.htm):
 ```bash
-$ scripts/feeds update -a
-$ scripts/feeds install -a
+mkdir -p initramfs/{bin,sbin,etc,proc,sys,newroot}
+touch initramfs/etc/mdev.conf
+wget http://jootamam.net/initramfs-files/busybox-1.10.1-static.bz2 -O - | bunzip2 > initramfs/bin/busybox
+chmod +x initramfs/bin/busybox
+ln -s busybox initramfs/bin/sh
+touch initramfs/init
+chmod +x initramfs/init
+```
+* `initramfs/init` contents (be sure to fill in the correct root location under `#Defaults`):
+```bash
+#!/bin/sh
+
+#Defaults
+init="/sbin/init"
+root="/dev/sda2"
+
+#Mount things needed by this script
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+
+#Disable kernel messages from popping onto the screen
+echo 0 > /proc/sys/kernel/printk
+
+#Clear the screen
+clear
+
+#Create all the symlinks to /bin/busybox
+busybox --install -s
+
+#Create device nodes
+mknod /dev/null c 1 3
+mknod /dev/tty c 5 0
+mdev -s
+
+#Function for parsing command line options with "=" in them
+# get_opt("init=/sbin/init") will return "/sbin/init"
+get_opt() {
+	echo "$@" | cut -d "=" -f 2
+}
+
+# Process command line options
+for i in $(cat /proc/cmdline); do
+	case $i in
+		root\=*)
+			root=$(get_opt $i)
+			;;
+		init\=*)
+			init=$(get_opt $i)
+			;;
+	esac
+done
+
+# Mount the root device
+mount "${root}" /newroot
+
+# Check if $init exists and is executable
+if [[ -x "/newroot/${init}" ]] ; then
+	#Unmount all other mounts so that the ram used by
+	#the initramfs can be cleared after switch_root
+	umount /sys /proc
+	
+	#Switch to the new root and execute init
+	exec switch_root /newroot "${init}"
+fi
+
+# This will only be run if the exec above failed
+echo "Failed to switch_root, dropping to a shell"
+exec sh
+```
+* and finally, write the entire directory tree to a cpio archive:
+```bash
+cd initramfs
+find . | cpio -H newc -o > ../initramfs.cpio
+cd ..
+gzip initramfs.cpio
+```
+
+The build a custom kernel in lede:
+
+```bash
 $ make menuconfig
 # set target system to x86
 # set subtarget to x86_64
@@ -26,6 +107,8 @@ $ make menuconfig
 # modify build system settings
 # modify kernel modules
 $ make kernel_menuconfig CONFIG_TARGET=subtarget
+# set initramfs
+# disable support for various Vmware and MS virtualization technologies
 ```
 
 EFI booting Lede:
