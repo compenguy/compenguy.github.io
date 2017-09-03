@@ -10,6 +10,7 @@
 * If there's a setting for what to do after power loss, set it to always power on
 * Disable secure boot
 * Set default boot device to be the EFI Shell App (it will run the startup.nsh script to boot the kernel with the correct parameters)
+  * See [my notes on building the openwrt kernel](/hobbies/openwrt/kernel.html) if you want to hardcode the kernel command line parameters and be able to boot the partition directly
 
 For reasons I don't completely understand, the kernel couldn't find the root partition when my hard drive was attached to anything other than the primary sata port. Whether EFI or CSM (BIOS), specifying the root partition by sdx# or partition UUID, nothing worked. Moving the hard drive to sata port 0 made everything magically start working.
 
@@ -78,6 +79,7 @@ I used SystemRescueCD for my bootable linux USB key.
   * Copy all the files over: `rsync -avxHAWX --numeric-ids --info=progress2 /mnt/ledefs/ /mnt/rootfs/`
 * `reboot`
 * **NOTHING WILL DISPLAY WHEN THE SYSTEM STARTS BOOTING.  DON'T PANIC: LEDE 17.0x KERNELS DON'T HAVE EFI FRAMEBUFFER CONFIGURED.**
+  * See [my notes on building the openwrt kernel](/hobbies/openwrt/kernel.html) if you want to include EFI framebuffer support
 
 
 ### Configuration
