@@ -1,19 +1,44 @@
-## Lede/OpenWRT
+## Building a Custom OpenWRT kernel
 
-Getting Lede:
-* [LEDE releases](https://downloads.lede-project.org/releases/)
-* [LEDE Quick Start guide](https://lede-project.org/docs/guide-quick-start/start)
-
-Basic installation instructions (MBR):
-* [Guide to using OpenWRT combined images on x86-64](https://we.riseup.net/lackof/openwrt-on-x86-64#using-the-combined-images)
-* [OpenWRT documentation for x86](https://wiki.openwrt.org/inbox/doc/openwrt_x86)
+### Building the kernel
 * [LEDE developer guide for building images](https://lede-project.org/docs/guide-developer/use-buildsystem)
+* [EFI OpenWRT on MinnowMax](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
+* [Open bug report](https://bugs.lede-project.org/index.php?do=details&task_id=515) against lede project for missing EFI Framebuffer
+* [Gentoo guide to building an EFI stub kernel](https://wiki.gentoo.org/wiki/EFI_stub_kernel)
 
-For reasons I don't understand, the default kernel seems unable to mount a root partition that is separate from the boot partition (as with UEFI) without an initrd/initramfs.  Easiest way to make this work is to embed the initramfs directly in the kernel, which means building the kernel from lede's git.  Other reasons to build a kernel from lede's git are:
-* Enabling [EFI framebuffer support that wasn't in the 17.01.0 release](http://www.mail-archive.com/lede-dev@lists.infradead.org/msg05989.html), although EFI stub support is
-* Disabling the stupid VM guest drivers/support and other crap that's not needed (speeds up boot fairly significantly)
+To build a custom kernel in lede:
 
-The short version:
+```bash
+$ git clone https://git.lede-project.org/source.git lede
+$ cd lede
+$ ./scripts/feeds update -a
+$ ./scripts/feeds install -a
+$ make defconfig
+$ make menuconfig
+# set target system to x86
+# set subtarget to x86_64
+# set Target Images => Kernel partition size: 64MB
+# Save
+# Exit
+$ make kernel_menuconfig CONFIG_TARGET=subtarget
+# set 64-bit kernel
+# Processor Type and Features => Processor family => Check Core 2/newer Xeon
+# Processor Type and Features => Check x86 architectural random number generator
+# Processor Type and Features => Check Symmetric Multiprocessing support
+# Power Management and ACPI Options => Check Cpuidle Driver for Intel Processors
+# Device Drivers => Serial ATA and Parallel ATA drivers (libata) => Check AHCI SATA support
+# Device Drivers => Serial ATA and Parallel ATA drivers (libata) => Check Platform AHCI SATA support
+# Device Drivers => Network device support => Ethernet driver support => Check Intel(R) PRO/1000 Gigabit Ethernet support
+# Device Drivers => Network device support => Ethernet driver support => Check Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support
+# Device Drivers => Network device support => Ethernet driver support => Check Intel(R) 82575/82576 PCI-Express Gigabit Ethernet support
+# Cryptographic API => Check AES cipher algorithms (AES-NI)
+# disable support for various Vmware and MS virtualization technologies
+# Save
+# Exit
+$ make V=99
+```
+
+### Creating an initrd
 * Create an [initramfs](http://jootamam.net/howto-initramfs-image.htm):
 ```bash
 mkdir -p initramfs/{bin,sbin,etc,proc,sys,newroot}
@@ -93,24 +118,7 @@ cd ..
 gzip initramfs.cpio
 ```
 
-The build a custom kernel in lede:
-
-```bash
-$ make menuconfig
-# set target system to x86
-# set subtarget to x86_64
-# Save
-# Exit
-$ make defconfig
-$ make menuconfig
-# modify package settings
-# modify build system settings
-# modify kernel modules
-$ make kernel_menuconfig CONFIG_TARGET=subtarget
-# set initramfs
-# disable support for various Vmware and MS virtualization technologies
-```
-
+### EFI Booting
 EFI booting Lede:
 * [OpenWRT EFI Boot on Intel Minnowboards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
 * [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
