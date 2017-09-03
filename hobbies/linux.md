@@ -21,7 +21,7 @@ Some links to help me on my way:
 * Google's [shell style guide](https://google.github.io/styleguide/shell.xml)
 
 ### Lede/OpenWRT
-Yeah, I built my own router.  Sort of.  I don't actually have it running yet.  On my path to VPNlightenment, I've [picked up some stuff](/hobbies/openwrt.html).
+Yeah, I built my own router.  Sort of.  I don't actually have it running yet.  On my path to VPNlightenment, I've [picked up some stuff](/hobbies/openwrt/).
 
 ### Books
 I've been meaning to take a closer look at [The Linux Programming Interface](http://man7.org/tlpi/).
