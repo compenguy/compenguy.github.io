@@ -72,7 +72,7 @@ I used SystemRescueCD for my bootable linux USB key.
   * Mount to `BOOT` partition: `mount /dev/sda` /mnt/bootfs`
   * Create the EFI boot image directory: `mkdir -p /mnt/bootfs/EFI/BOOT`
   * Copy the kernel into the boot image directory: `cp /livemnt/boot/data/lede-efi/lede-...-x86-64-vmlinuz /mnt/bootfs/EFI/BOOT/bootx64.efi`
-  * Create the EFI startup script to pass the necessary kernel params: `echo 'fs:\\EFI\\BOOT\\bootx64.efi root=-/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd" > /mnt/bootfs/startup.nsh`
+  * Create the EFI startup script to pass the necessary kernel params: `echo 'fs:\\EFI\\BOOT\\bootx64.efi root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd" > /mnt/bootfs/startup.nsh`
 * Set up the root partition:
   * Mount the `ROOT` partition: `mount /dev/sda2 /mnt/rootfs`
   * Mount the rootfs image: `mount -o loop /livemnt/boot/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs`
