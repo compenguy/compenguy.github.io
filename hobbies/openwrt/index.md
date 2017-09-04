@@ -1,6 +1,7 @@
 ## Lede/OpenWRT
 
 ### Hardware
+
 I built my own x86-64 router from the following:
 * [m350 mini-itx case](http://www.mini-box.com/M350-universal-mini-itx-enclosure)
 * [picoPSU-90 DC-DC power supply](http://www.mini-box.com/picoPSU-90)+[120W AC-DC power supply](http://www.mini-box.com/12v-10A-AC-DC-Power-Adapter)
@@ -12,6 +13,7 @@ I built my own x86-64 router from the following:
 * 120GB Intel SATA SSD (again, overkill, but the cost difference was minimal)
 
 ### System Setup
+
 * If the system is EFI capable, ensure it's configured to boot in EFI mode (not BIOS/CSM/legacy mode)
 * Disable any BIOS features that aren't needed in a router
     * Network/PXE boot
@@ -26,6 +28,7 @@ I built my own x86-64 router from the following:
 For reasons I don't completely understand, the kernel couldn't find the root partition when my hard drive was attached to anything other than the primary sata port. Whether EFI or CSM (BIOS), specifying the root partition by sdx# or partition UUID, nothing worked. Moving the hard drive to sata port 0 made everything magically start working.
 
 ### Quick Guide to Legacy BIOS Boot Install
+
 1. Download a [LEDE release](https://downloads.lede-project.org/releases/) combined ext4 image
     * `...-combined-squashfs.img` for wear-intolerant storage like USB, SD card, etc
     * `...-combined-ext4.img` for high-wear storage like SSDs
@@ -42,8 +45,11 @@ For reasons I don't completely understand, the kernel couldn't find the root par
 
 References:
 * [OpenWRT on x86-64](https://we.riseup.net/lackof/openwrt-on-x86-64)
+
 ### Full Guide to EFI Install
+
 #### Preparing the bootable USB key
+
 Options:
 * [Ubuntu](https://wiki.ubuntu.com/LiveUsbPendrivePersistent)
 * [SystemRescueCD](http://www.system-rescue-cd.org/Installing-SystemRescueCd-on-a-USB-stick/)
@@ -62,7 +68,9 @@ I used SystemRescueCD for my bootable linux USB key.
 
 References:
 * [LEDE releases](https://downloads.lede-project.org/releases/)
+
 ##### systemd-boot (gummiboot)
+
 1. Install systemd build deps: `sudo apt install meson gnu-efi gperf libcap-dev libmount-dev docbook-xsl`
 2. Clone the systemd git repo: `git clone https://github.com/systemd/systemd.git && cd systemd`
 3. Configure the build: `meson -D gnu-efi=true build/`
@@ -86,7 +94,9 @@ References:
 References:
 * [Arch systemd-boot documentation](https://wiki.archlinux.org/index.php/systemd-boot)
 * [systemd-boot official website](https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/)
+
 #### Installation
+
 1. On router computer, boot from the USB key
 2. Change directories to where you put the image: `cd /livemnt/boot/data`
 3. Convert from MBR to GPT
@@ -105,7 +115,7 @@ References:
         * Copy the kernel into the boot image directory: `cp /livemnt/boot/data/lede-efi/lede-...-x86-64-vmlinuz /mnt/bootfs/EFI/BOOT/bootx64.efi`
         * Create the EFI startup script to pass the necessary kernel params: `echo 'fs:\\EFI\\BOOT\\bootx64.efi root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd" > /mnt/bootfs/startup.nsh`
     * If doing a systemd-boot install:
-        * Copy the systemd-boot files into the boot image directory: `cp -R /livemnt/boot/data/lede-efi/systemd-boot/\* /mnt/bootfs/`
+        * Copy the systemd-boot files into the boot image directory: `cp -R /livemnt/boot/data/lede-efi/systemd-boot/* /mnt/bootfs/`
 7. Set up the root partition:
     * Mount the `ROOT` partition: `mount /dev/sda2 /mnt/rootfs`
     * Mount the rootfs image: `mount -o loop /livemnt/boot/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs`
@@ -118,7 +128,9 @@ References:
 * [Guide to installing OpenWRT on MinnowBoards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
 * [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
 * [OpenWRT documentation for x86](https://wiki.openwrt.org/inbox/doc/openwrt_x86)
+
 ### Configuration
+
 1. From a system connected to the LAN port of the router, ssh into `192.168.1.1`
 2. Set a password: `passwd`
 3. If the router is being setup with a private network connect to the WAN port, specifically if the upstream network is `192.168.1.x`:
@@ -136,17 +148,21 @@ References:
 
 References:
 * [LEDE Quick Start guide](https://lede-project.org/docs/guide-quick-start/start)
+
 ### Bonus Round
+
 * [LuCi https certificate](https://lede-project.org/docs/user-guide/getting-rid-of-luci-https-certificate-warnings)
 * [Smart Queue Management (SQM)](https://lede-project.org/docs/user-guide/sqm) - minimizing [bufferbloat](https://www.bufferbloat.net/projects/bloat/wiki/What_can_I_do_about_Bufferbloat/)
 * luci-app-adblock
 * luci-app-ddns
 
 #### Cisco/Fortigate/etc IPSEC VPN
+
 * System => Software
   1. Download and install package: vpnc
   2. ssh into the router, and edit `/etc/vpnc/default.conf`
   3. Download vpnc-script from [here](http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script) and save it as /etc/vpnc/vpnc-script (and be sure to set +x on it)
 
 #### OpenConnect SSL VPN
+
 * https://wiki.openwrt.org/doc/howto/openconnect-setup
