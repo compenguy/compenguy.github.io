@@ -1,5 +1,16 @@
 ## Lede/OpenWRT
 
+### Hardware
+I built my own x86-64 router from the following:
+* [m350 mini-itx case](http://www.mini-box.com/M350-universal-mini-itx-enclosure)
+* [picoPSU-90 DC-DC power supply](http://www.mini-box.com/picoPSU-90)+[120W AC-DC power supply](http://www.mini-box.com/12v-10A-AC-DC-Power-Adapter)
+* [SuperMicro X11SBA-F Pentium N3700 motherboard+cpu](http://www.supermicro.com/products/motherboard/X11/X11SBA-F.cfm)
+  * Dual Gbit Intel ethernet adapters
+  * Supports AES-NI instructions for hardware crypto acceleration
+  * IPMI support enables network kvm access
+* 8GB of RAM (way overkill, but the cost difference from 4GB was pretty minimal)
+* 120GB Intel SATA SSD (again, overkill, but the cost difference was minimal)
+
 ### System Setup
 * If the system is EFI capable, ensure it's configured to boot in EFI mode (not BIOS/CSM/legacy mode)
 * Disable any BIOS features that aren't needed in a router
