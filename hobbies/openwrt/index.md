@@ -15,9 +15,6 @@
 For reasons I don't completely understand, the kernel couldn't find the root partition when my hard drive was attached to anything other than the primary sata port. Whether EFI or CSM (BIOS), specifying the root partition by sdx# or partition UUID, nothing worked. Moving the hard drive to sata port 0 made everything magically start working.
 
 ### Quick Guide to Legacy BIOS Boot Install
-* [OpenWRT on x86-64](https://we.riseup.net/lackof/openwrt-on-x86-64)
-
-
 1. Download a [LEDE release](https://downloads.lede-project.org/releases/) combined ext4 image
   * `...-combined-squashfs.img` for wear-intolerant storage like USB, SD card, etc
   * `...-combined-ext4.img` for high-wear storage like SSDs
@@ -32,10 +29,10 @@ For reasons I don't completely understand, the kernel couldn't find the root par
   * Resize the filesystem to fill the partition: `resize2fs /dev/sda2`
   * `reboot`
 
+References:
+* [OpenWRT on x86-64](https://we.riseup.net/lackof/openwrt-on-x86-64)
 ### Full Guide to EFI Install
 #### Preparing the bootable USB key
-* [LEDE releases](https://downloads.lede-project.org/releases/)
-
 Options:
 * [Ubuntu](https://wiki.ubuntu.com/LiveUsbPendrivePersistent)
 * [SystemRescueCD](http://www.system-rescue-cd.org/Installing-SystemRescueCd-on-a-USB-stick/)
@@ -52,11 +49,9 @@ I used SystemRescueCD for my bootable linux USB key.
 4. Gunzip the image, and copy the resulting file into `/mnt/<usbkey>/data/lede-efi` (if using SystemRescueCD)
 5. Copy the vmlinuz into `/mnt/<usbkey>/data/lede-efi`
 
+References:
+* [LEDE releases](https://downloads.lede-project.org/releases/)
 ##### systemd-boot (gummiboot)
-* [Arch systemd-boot documentation](https://wiki.archlinux.org/index.php/systemd-boot)
-* [systemd-boot official website](https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/)
-
-
 1. Install systemd build deps: `sudo apt install meson gnu-efi gperf libcap-dev libmount-dev docbook-xsl`
 2. Clone the systemd git repo: `git clone https://github.com/systemd/systemd.git && cd systemd`
 3. Configure the build: `meson -D gnu-efi=true build/`
@@ -77,11 +72,10 @@ I used SystemRescueCD for my bootable linux USB key.
   ```
 9. Copy the entire systemd-boot directory tree into`/mnt/<usbkey>/data/lede-efi`
 
+References:
+* [Arch systemd-boot documentation](https://wiki.archlinux.org/index.php/systemd-boot)
+* [systemd-boot official website](https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/)
 #### Installation
-* [Guide to installing OpenWRT on MinnowBoards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
-* [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
-* [OpenWRT documentation for x86](https://wiki.openwrt.org/inbox/doc/openwrt_x86)
-
 1. On router computer, boot from the USB key
 2. Change directories to where you put the image: `cd /livemnt/boot/data`
 3. Convert from MBR to GPT
@@ -109,10 +103,11 @@ I used SystemRescueCD for my bootable linux USB key.
 9. **NOTHING WILL DISPLAY WHEN THE SYSTEM STARTS BOOTING.  DON'T PANIC: LEDE 17.0x KERNELS DON'T HAVE EFI FRAMEBUFFER CONFIGURED.**
   * See [my notes on building the openwrt kernel](/hobbies/openwrt/kernel.html) if you want to include EFI framebuffer support
 
-
+References:
+* [Guide to installing OpenWRT on MinnowBoards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
+* [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
+* [OpenWRT documentation for x86](https://wiki.openwrt.org/inbox/doc/openwrt_x86)
 ### Configuration
-* [LEDE Quick Start guide](https://lede-project.org/docs/guide-quick-start/start)
-
 1. From a system connected to the LAN port of the router, ssh into `192.168.1.1`
 2. Set a password: `passwd`
 3. If the router is being setup with a private network connect to the WAN port, specifically if the upstream network is `192.168.1.x`:
@@ -128,7 +123,8 @@ I used SystemRescueCD for my bootable linux USB key.
   * Set a `Local server`
   * Set a `Local domain` (should generally have the same value as `Local server`)
 
-
+References:
+* [LEDE Quick Start guide](https://lede-project.org/docs/guide-quick-start/start)
 ### Bonus Round
 * [LuCi https certificate](https://lede-project.org/docs/user-guide/getting-rid-of-luci-https-certificate-warnings)
 * [Smart Queue Management (SQM)](https://lede-project.org/docs/user-guide/sqm) - minimizing [bufferbloat](https://www.bufferbloat.net/projects/bloat/wiki/What_can_I_do_about_Bufferbloat/)

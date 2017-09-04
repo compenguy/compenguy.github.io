@@ -1,11 +1,6 @@
 ## Building a Custom OpenWRT kernel
 
 ### Building the kernel
-* [LEDE developer guide for building images](https://lede-project.org/docs/guide-developer/use-buildsystem)
-* [EFI OpenWRT on MinnowMax](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
-* [Open bug report](https://bugs.lede-project.org/index.php?do=details&task_id=515) against lede project for missing EFI Framebuffer
-* [Gentoo guide to building an EFI stub kernel](https://wiki.gentoo.org/wiki/EFI_stub_kernel)
-
 To build a custom kernel in lede:
 
 ```bash
@@ -38,6 +33,11 @@ $ make kernel_menuconfig CONFIG_TARGET=subtarget
 $ make V=99
 ```
 
+References:
+* [LEDE developer guide for building images](https://lede-project.org/docs/guide-developer/use-buildsystem)
+* [EFI OpenWRT on MinnowMax](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
+* [Open bug report](https://bugs.lede-project.org/index.php?do=details&task_id=515) against lede project for missing EFI Framebuffer
+* [Gentoo guide to building an EFI stub kernel](https://wiki.gentoo.org/wiki/EFI_stub_kernel)
 ### Creating an initrd
 * Create an [initramfs](http://jootamam.net/howto-initramfs-image.htm):
 ```bash
@@ -120,8 +120,6 @@ gzip initramfs.cpio
 
 ### EFI Booting
 EFI booting Lede:
-* [OpenWRT EFI Boot on Intel Minnowboards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
-* [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
 * either use physical disks, or do the following to to create disk images:
 ```bash
 # dd if=/dev/zero of=~/file.img bs=1MiB count=1024
@@ -167,3 +165,7 @@ qemu-system-x86_64 -m 1024 --bios /usr/share/ovmf/OVMF.fd -net none -hda ./sda.i
   - `-net none` disable ethernet so that it skips attempting to PXE boot
   - `-hda ./sda.img` to select the disk image to use
   - `-snapshot` write any disk modifications to temp files rather than modifying the disk image
+
+References:
+* [OpenWRT EFI Boot on Intel Minnowboards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
+* [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
