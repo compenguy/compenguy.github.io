@@ -64,13 +64,13 @@ I used SystemRescueCD for my bootable linux USB key.
 5. Copy the bootloader into a temporary EFI staging area: `install -D build/src/boot/efi/systemd-bootx64.efi systemd-boot/EFI/BOOT/bootx64.efi`
 6. Copy the kernel into the EFI kernel staging area: `install -D /mnt/<usbkey>/data/lede-efi/lede-17.01.2-x86-64-vmlinuz systemd-boot/linux/`
 7. Create the basic bootloader configuration: `install -d systemd-boot/loader && vi systemd-boot/loader/loader.conf`
-  * ```
+  ```
   default lede-*
   timeout 3
   editor 0
   ```
 8. Create the boot entry for the kernel we added: `install -d systemd-boot/loader/entries && vi systemd-boot/loader/entries/lede-17.01.2.conf`
-  * ```
+  ```
   title    LEDE 17.01.2
   efi      /linux/lede-17.01.2-x86-64-vmlinuz
   options root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd
