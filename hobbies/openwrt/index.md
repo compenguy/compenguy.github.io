@@ -52,12 +52,16 @@ I used SystemRescueCD for my bootable linux USB key.
 * Gunzip the image, and copy the resulting file into `/mnt/<usbkey>/data/lede-efi` (if using SystemRescueCD)
 * Copy the vmlinuz into `/mnt/<usbkey>/data/lede-efi`
 
-##### Gummiboot
-* git clone https://github.com/systemd/systemd.git
-* sudo apt install gnu-efi
+##### Gummiboot (systemd-boot)
+* [Arch systemd-boot documentation](https://wiki.archlinux.org/index.php/systemd-boot)
+* [systemd-boot official website](https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/)
+
+
+* Clone the systemd git repo: `git clone https://github.com/systemd/systemd.git`
+* Install systemd build deps: `sudo apt install meson gnu-efi gperf libcap-dev libmount-dev docbook-xsl`
 * cd systemd
-* mesonconf -D gnu-efi=true
-* meson build/ && ninja -C build
+* meson -D gnu-efi=true build/
+* ninja -C build src/boot/efi/system-bootx64.efi
 * mkdir -p gummiboot/EFI/BOOT
 * cp build/src/boot/efi/systemd-bootx64.efi gummiboot/EFI/BOOT/bootx64.efi
 * mkdir -p gummiboot/linux
