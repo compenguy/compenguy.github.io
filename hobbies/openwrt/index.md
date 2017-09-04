@@ -52,6 +52,31 @@ I used SystemRescueCD for my bootable linux USB key.
 * Gunzip the image, and copy the resulting file into `/mnt/<usbkey>/data/lede-efi` (if using SystemRescueCD)
 * Copy the vmlinuz into `/mnt/<usbkey>/data/lede-efi`
 
+##### Gummiboot
+* git clone https://github.com/systemd/systemd.git
+* sudo apt install gnu-efi
+* cd systemd
+* mesonconf -D gnu-efi=true
+* meson build/ && ninja -C build
+* mkdir -p gummiboot/EFI/BOOT
+* cp build/src/boot/efi/systemd-bootx64.efi gummiboot/EFI/BOOT/bootx64.efi
+* mkdir -p gummiboot/linux
+* cp `/mnt/<usbkey>/data/lede-efi/lede-17.01.2-x86-64-vmlinuz gummiboot/linux/
+* mkdir -p gummiboot/loader/entries
+* vi gummiboot/loader/loader.conf
+  * ```
+  default lede-*
+  timeout 3
+  editor 0
+  ```
+* vi gummiboot/loader/entries/lede-17.01.2.conf
+  * ```
+  title    LEDE 17.01.2
+  efi      /linux/lede-17.01.2-x86-64-vmlinuz
+  options root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd
+  ```
+* Copy the entire gummiboot directory tree into`/mnt/<usbkey>/data/lede-efi`
+
 #### Installation
 * [Guide to installing OpenWRT on MinnowBoards](http://elinux.org/Minnowboard:MinnowMaxDistros#OpenWrt)
 * [ArchLinux UEFI boot guide](https://wiki.archlinux.org/index.php/GNU_Parted#UEFI.2FGPT_examples)
@@ -71,8 +96,11 @@ I used SystemRescueCD for my bootable linux USB key.
 * Set up the EFI boot partition:
   * Mount to `BOOT` partition: `mount /dev/sda` /mnt/bootfs`
   * Create the EFI boot image directory: `mkdir -p /mnt/bootfs/EFI/BOOT`
-  * Copy the kernel into the boot image directory: `cp /livemnt/boot/data/lede-efi/lede-...-x86-64-vmlinuz /mnt/bootfs/EFI/BOOT/bootx64.efi`
-  * Create the EFI startup script to pass the necessary kernel params: `echo 'fs:\\EFI\\BOOT\\bootx64.efi root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd" > /mnt/bootfs/startup.nsh`
+  * If doing a bare kernel install:
+    * Copy the kernel into the boot image directory: `cp /livemnt/boot/data/lede-efi/lede-...-x86-64-vmlinuz /mnt/bootfs/EFI/BOOT/bootx64.efi`
+    * Create the EFI startup script to pass the necessary kernel params: `echo 'fs:\\EFI\\BOOT\\bootx64.efi root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd" > /mnt/bootfs/startup.nsh`
+  * If doing a gummiboot install:
+    * Copy the gummiboot files into the boot image directory: `cp -R /livemnt/boot/data/lede-efi/gummiboot/* /mnt/bootfs/`
 * Set up the root partition:
   * Mount the `ROOT` partition: `mount /dev/sda2 /mnt/rootfs`
   * Mount the rootfs image: `mount -o loop /livemnt/boot/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs`
