@@ -105,12 +105,12 @@ References:
         * Copy the kernel into the boot image directory: `cp /livemnt/boot/data/lede-efi/lede-...-x86-64-vmlinuz /mnt/bootfs/EFI/BOOT/bootx64.efi`
         * Create the EFI startup script to pass the necessary kernel params: `echo 'fs:\\EFI\\BOOT\\bootx64.efi root=/dev/sda2 rootfstype=ext4 rootwait console=tty0 noinitrd" > /mnt/bootfs/startup.nsh`
     * If doing a systemd-boot install:
-        * Copy the systemd-boot files into the boot image directory: `cp -R /livemnt/boot/data/lede-efi/systemd-boot/* /mnt/bootfs/`
+        * Copy the systemd-boot files into the boot image directory: `cp -R /livemnt/boot/data/lede-efi/systemd-boot/\* /mnt/bootfs/`
 7. Set up the root partition:
     * Mount the `ROOT` partition: `mount /dev/sda2 /mnt/rootfs`
     * Mount the rootfs image: `mount -o loop /livemnt/boot/data/lede-...-x86-64-rootfs-ext4.img /mnt/ledefs`
     * Copy all the files over: `rsync -avxHAWX --numeric-ids --info=progress2 /mnt/ledefs/ /mnt/rootfs/`
-8. `reboot`
+8. Reboot the system
 9. **NOTHING WILL DISPLAY WHEN THE SYSTEM STARTS BOOTING.  DON'T PANIC: LEDE 17.0x KERNELS DON'T HAVE EFI FRAMEBUFFER CONFIGURED.**
     * See [my notes on building the openwrt kernel](/hobbies/openwrt/kernel.html) if you want to include EFI framebuffer support
 
