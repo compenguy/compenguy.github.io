@@ -166,8 +166,10 @@ References:
   ```
   #!/bin/sh /etc/rc.common
 
+  START=50
+  STOP=50
   USE_PROCD=1
-  PROCD_DEBUG=1
+  #PROCD_DEBUG=1
 
   start_service() {
     procd_open_instance vpnc
