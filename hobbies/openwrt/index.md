@@ -162,6 +162,39 @@ References:
   1. Download and install package: vpnc
   2. ssh into the router, and edit `/etc/vpnc/default.conf`
   3. Download vpnc-script from [here](http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/HEAD:/vpnc-script) and save it as /etc/vpnc/vpnc-script (and be sure to set +x on it)
+  4. Create an init script to manage the vpnc service:
+  ```
+  #!/bin/sh /etc/rc.common
+
+  USE_PROCD=1
+  PROCD_DEBUG=1
+
+  start_service() {
+    procd_open_instance vpnc
+    procd_set_param command  /usr/sbin/vpnc --non-inter --no-detach
+    procd_set_param watch network.interface
+
+    # respawn automatically if something died
+    # if process dies sooner than respawn_threshold, it is considered
+    # crashed and after 5 retries the service is stopped
+    procd_set_param respawn ${respawn_threshold:-3600} ${respawn_timeout:-5} ${respawn_retry:-5}
+
+    procd_set_param file /etc/vpnc/default.conf
+    procd_set_param stdout 1
+    procd_set_param stderr 1
+    procd_close_instance
+  }
+
+  stop_service() {
+    /usr/sbin/vpnc-disconnect
+  }
+
+  reload_service() {
+    procd_send_signal vpnc stop
+    procd_send_signal vpnc start
+  }
+  ```
+
 
 #### OpenConnect SSL VPN
 
