@@ -58,6 +58,16 @@ References:
 References:
 * [Download firmware](https://forum.xda-developers.com/moto-e-2015/general/moto-e-2015-modems-t3296044)
 
+### Kernels
+
+* Recent Squid kernels (r19+) require Android 6.0+ ROMs
+  * May require a modem update (r12+), too
+* Use adb to push the zip to the sdcard
+* Use twrp to install it
+
+References:
+* [Squid Kernel for Moto E LTE (2015)](https://forum.xda-developers.com/moto-e-2015/orig-development/squid-kernel-moto-e-lte-2015-t3072209)
+
 ### Remove Bootloader Unlocked Warning
 
 * Download [alternate boot logo](http://www.mediafire.com/download/1x0s6gbxmrw5x0r/Moto-E-2015-logo.zip)
