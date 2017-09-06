@@ -35,7 +35,7 @@ References:
 
 ### Install ROM
 
-* Download the ROM image for installation, e.g. [LineageOS](https://download.lineageos.org/surnia).
+* Download the ROM image for installation, e.g. [LineageOS](https://download.lineageos.org/surnia), [Cyanogenmod](https://forum.xda-developers.com/moto-e-2015/orig-development/rom-cyanogenmod-13-moto-e-lte-t3329100).
 * Download the [Google Apps package](http://opengapps.org/?api=7.1&variant=micro), if desired
 * Push each downloaded zip to the sdcard: "adb push filename.zip /sdcard/"
 * In recovery mode, select "Wipe", then "Advanced Wipe"
@@ -46,3 +46,25 @@ References:
   * DO NOT REBOOT after installing ROM if you intend to install Gapps
 * Repeat for any additional zips pushed to the sdcard
 * Reboot into System - I opted not to install twrp app
+
+References:
+* [Install LineageOS on surnia](https://wiki.lineageos.org/devices/surnia/install)
+* [Install Cyanogenmod on surnia](https://forum.xda-developers.com/moto-e-2015/orig-development/rom-cyanogenmod-13-moto-e-lte-t3329100)
+
+### Modems and Basebands
+
+* Extract the zip file and, while booted into fastboot, run "2.flash.bat"
+
+References:
+* [Download firmware](https://forum.xda-developers.com/moto-e-2015/general/moto-e-2015-modems-t3296044)
+
+### Remove Bootloader Unlocked Warning
+
+* Download [alternate boot logo](http://www.mediafire.com/download/1x0s6gbxmrw5x0r/Moto-E-2015-logo.zip)
+* Extract it into folder with fastboot.exe
+* Reboot into bootloader with "adb reboot bootloader"
+* Flash the new logo "fastboot flash logo logo.bin"
+* Reboot "fastboot reboot"
+
+References:
+* [Remove bootloader unlocked warning](http://www.droidviews.com/how-to-remove-bootloader-unlocked-warning-on-moto-e-2015/)
