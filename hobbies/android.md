@@ -1,6 +1,6 @@
 ## Android
 
-### Unlocking the Moto E2 LTE XT1527 (surnia)
+### Prerequisites
 
 * Enable "Developer Options" by going into "Settings", "About this phone", and then tap on the "Build Number" field seven times
 * Enable "USB Debugging" in "Developer Options" on the phone
@@ -8,7 +8,17 @@
 * Download [Android Platform Tools](https://developer.android.com/studio/releases/platform-tools.html#download)
 * If on Windows, download the [Motorola USB Driver for Windows](http://www.teamandroid.com/2015/06/24/moto-e-2015-usb-drivers-download)
   * Also called Motorola Device Manager
-* Change to directory that Android Platform Tools were extracted to
+
+### Backing up Your Phone
+
+* To backup your phone, run "adb backup -apk -shared -all -system"
+* To restore your phone, run "adb restore backup.ab"
+
+References:
+* [GUIDE: Full Phone Backup without Unlock or Root](https://forum.xda-developers.com/galaxy-nexus/general/guide-phone-backup-unlock-root-t1420351)
+
+### Unlocking the Moto E2 LTE XT1527 (surnia)
+
 * Run "adb reboot bootloader"
 * When the phone finishes entering fastboot, run "fastboot devices" to verify that it's properly connect
 * Run "fastboot oem get_unlock_data"
