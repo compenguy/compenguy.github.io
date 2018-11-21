@@ -162,7 +162,7 @@ Once I had all these pieces in place, I promptly went searching the internet for
 </plane>
 ```
 
-At first I though the problem was with my lexer - it took me awhile to see what was wrong with this document.  Specifically, [production 17](https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-PITarget) says the name that immediately follows a '<?' (opening of a Processing Instruction token) cannot begin with the sequence 'XML' or 'xml':
+At first I thought the problem was with my lexer - it took me awhile to see what was wrong with this document.  Specifically, [production 17](https://www.w3.org/TR/2006/REC-xml11-20060816/#NT-PITarget) says the name that immediately follows a '<?' (opening of a Processing Instruction token) cannot begin with the sequence 'XML' or 'xml':
 
 ```
 [17]   PITarget   ::=   Name - (('X' | 'x') ('M' | 'm') ('L' | 'l'))
