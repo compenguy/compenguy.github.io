@@ -103,7 +103,7 @@ Character classes are another form of alternation, typically represented in EBNF
 
 An interesting wrinkle on this concept is to say `[^<sequence>]`, which means "any character that is not in this sequence".  The translation of this concept to pest is more complicated, and requires introducing a new concept -- the `!` operator.  The `!` operator indicates that a particular pattern must *not* match at the current position, and then the parser will continue matching the next pattern starting from that same position.
 
-So what does that mean here?  A character class `[^%&]` means any character that is neither `%` nor `&`, so we'd write that in pest as `!("%" | "&") ~ ANY`.  `ANY` is a built-in production in pest that matches any single character, although you could substitute more limited alternatives here, for example, the Char production from the xml spec, which would instead suggest "any *allowable* character that's neither `%` nor `&`".
+So what does that mean here?  A character class `[^%&]` means any character that is neither `%` nor `&`, so we'd write that in pest as `!("%" | "&") ~ ANY`.  `ANY` is a built-in production in pest that matches any single character, although you could substitute more limited alternatives here, for example, the `Char` production from the xml spec, which would instead suggest "any *allowable* character that's neither `%` nor `&`".
 
 To see this in action, let's look at the `EntityValue` production from the spec:
 
