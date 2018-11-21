@@ -131,7 +131,7 @@ We can see a very simple example of this here:
 Comment = { "<!--" ~ ( (!"-" ~ Char) | ("-" ~ (!"-" ~ Char)))* ~ "-->" }
 ```
 
-The EBNF subsequence `(Char - '-')` means "match an allowable character, but not if it matches '-'".  The associated pest expression instead says "check if the current position '-', and if it's not then match an allowable character."
+The EBNF subsequence `(Char - '-')` means "match an allowable character, but not if it matches '-'".  The associated pest expression instead says "check if the current position matches '-', and if it's not then match an allowable character."
 
 We can see a more complicated example of this:
 
