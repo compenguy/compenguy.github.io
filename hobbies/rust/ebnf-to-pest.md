@@ -52,7 +52,7 @@ The pest syntax for a production looks like `<name> = { <rules> }`.  To say "`A`
 
 Consequently, `document ::= prolog element Misc*` would be written in pest as `document = { prolog ~ element ~ Misc* }`.
 
-## Characters, Alternation, and Ranges
+### Characters, Alternation, and Ranges
 
 The next production is used in defining generally acceptable character ranges.  It introduces a few new basic syntactic concepts:
 
@@ -77,7 +77,7 @@ The final interesting thing to note here is that the xml spec specifies characte
 
 You may also note that the opening curly brace for my `Char` production in pest is preceded by an underscore (`_`).  That tells pest not to emit a unique token for each `Char` that it parses.  The `Char`s will still be parsed, they'll just be returned as part of other productions that are built up using `Char` in them.
 
-### Side note
+#### Side note
 
 Pest has a [really neat playground](https://pest.rs/#editor) for testing out production rules and seeing what tokens they emit.
 
@@ -97,7 +97,7 @@ Words = { Word ~ (S ~ Word)* }
 
 Feel free to play around with it.  Try removing the leading underscores (`_`) on the `Char` and `S` productions.  The `Word` production basically says a word is any sequence of characters that isn't a whitespace char, and `Words` one or more `Word`s separated by one or more spaces.
 
-## Character Classes
+### Character Classes
 
 Character classes are another form of alternation, typically represented in EBNF as `[<sequence of individual characters>]`, e.g. `[%&]`, which is represented in pest as `"%" | "&"`.
 
@@ -117,7 +117,7 @@ EntityValue = { ("\"" ~ ( (!("%" | "&" | "\"") ~ Char) | PEReference | Reference
 
 To put this production into plain english, an `EntityValue` is a sequence of characters enclosed in matching single- or double-quotes, and inside the quotes is a sequence/combination of zero or more non-'%' and non-'&' characters, `PEReferences`, and `References`.
 
-## "And Not" Sequences
+### "And Not" Sequences
 
 In EBNF, to express the idea that a general pattern should match at the current position, but another pattern should not, that's written as `A - B` (`A` matches and `B` doesn't).  Pest expresses this same idea as `!B ~ A`.
 
