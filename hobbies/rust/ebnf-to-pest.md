@@ -144,7 +144,7 @@ We can see a more complicated example of this:
 PI = { "<?" ~ PITarget ~ (S ~ (!(Char* ~ "?>" ~ Char*) ~ Char*))? ~ "?>" }
 ```
 
-Look at how the EBNF subsequence `(Char\* - (Char\* '?>' Char\*)))` was converted to `(!(Char\* ~ "?>" ~ Char\*) ~ Char\*))`.
+Look at how the EBNF subsequence `(Char* - (Char* '?>' Char*)))` was converted to `(!(Char* ~ "?>" ~ Char*) ~ Char*))`.
 
 ## Wrapping Up
 
