@@ -1,6 +1,6 @@
 ## Hobbies
 
-* [rust](/hobbies/rust.html)
+* [rust](/hobbies/rust/)
 * [linuxing around](/hobbies/linux.html)
 * [android](/hobbies/android.html)
 * [woodworking](/hobbies/woodworking.html)

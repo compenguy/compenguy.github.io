@@ -24,7 +24,6 @@ Tor extensively evaluated a move to either Go or Rust, and [settled on Rust](htt
 
 npm, coursera, Samsung SmartThings - [the list of major projects standing behind rust is growing longer](https://www.rust-lang.org/en-US/friends.html). There's even [a game on Steam written in rust](https://www.reddit.com/r/rust_gamedev/comments/5vqlln/shar_one_year_with_rust/).
 
-
 And Rust is not perfect.  Writing [unsafe code](https://doc.rust-lang.org/beta/nomicon/meet-safe-and-unsafe.html) can't always be avoided.  There are some [degenerate cases](https://doc.rust-lang.org/beta/nomicon/leaking.html) where leaks are possible.  Very few batteries included - instead of a rich standard library system, it relies on the crate ecosystem, a darwinistic environment of rapidly-evolving choices, although people have been making efforts to [collect](https://github.com/brson/stdx) and [advertise](https://github.com/llogiq/stdx-dev) important crates that are high quality and stable.
 
 ### How to Rust
@@ -35,7 +34,8 @@ And Rust is not perfect.  Writing [unsafe code](https://doc.rust-lang.org/beta/n
 * [Rust for C/C++ developers](https://github.com/nrc/r4cppp)
 
 ### My Rust Projects
+- [ ] [xml-grimoire](https://github.com/compenguy/xml-grimoire) - an xml lexer (the first stage an XML parser) (read my post about [converting EBNF definitions to a pest grammar](/hobbies/rust/ebnf-to-pest.html)
+- [ ] [encodingbuf](https://github.com/compenguy/encodingbuf) - a [buffered](https://doc.rust-lang.org/stable/std/io/trait.BufRead.html), arbitrary-encoding-to-utf-8 converting [Read](https://doc.rust-lang.org/std/io/trait.Read.html)er
+- [x] [ngrammatic](https://crates.io/crates/ngrammatic) - a character-based ngram crate for fuzzy string matching
 - [x] [ricracroe](https://github.com/compenguy/ricracroe) - a CLI tic-tac-toe game
-- [ ] nesugo - a rust-based NES emulator
-- [ ] clickrs - an X11 automated mouse and keyboard clicker
 
